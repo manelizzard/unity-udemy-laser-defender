@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject laserPrefab;
 	public float projectileSpeed;
 	public float fireRate;
+	public float health;
 
 	float xmin;
 	float xmax;
@@ -44,6 +45,33 @@ public class PlayerController : MonoBehaviour {
 			InvokeRepeating("Fire", 0.000001f, fireRate);
 		} else if (Input.GetKeyUp (KeyCode.Space)) {
 			CancelInvoke("Fire");
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D collider) {
+		Debug.Log ("Hit");
+		// - Check if a Projectile has hit the enemy
+		Projectile missile = collider.gameObject.GetComponent<Projectile> ();
+		if (missile != null && collider.gameObject.tag != "Player") {
+			// - Make the enemy get the damage
+			float damage = missile.damage;
+			TakeDamage (damage);
+
+			// - Notify projectile to destroy itself
+			missile.Hit();
+		}
+	}
+
+	/// <summary>
+	/// Takes the damage from the projectile.
+	/// </summary>
+	/// <param name="damage">Damage.</param>
+	void TakeDamage(float damage) {
+		health -= damage;
+
+		// - If health reaches 0, destroy itself
+		if (health <= 0) {
+			Destroy(gameObject);
 		}
 	}
 }
