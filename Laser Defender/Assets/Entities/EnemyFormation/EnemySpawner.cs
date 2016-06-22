@@ -30,7 +30,6 @@ public class EnemySpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 currentPosition = gameObject.transform.position;
 
 		if (movingRight) {
 			// - Move formation right
@@ -43,8 +42,10 @@ public class EnemySpawner : MonoBehaviour {
 		// - Detect direciton change
 		float leftEdgeOfFormation = transform.position.x - (0.5f * width);
 		float rightEdgeOfFormation = transform.position.x + (0.5f * width);
-		if (leftEdgeOfFormation < xmin || rightEdgeOfFormation > xmax) {
-			movingRight = !movingRight;
+		if (leftEdgeOfFormation < xmin) {
+			movingRight = true;
+		} else if(rightEdgeOfFormation > xmax) {
+			movingRight = false;
 		}
 	
 	}
