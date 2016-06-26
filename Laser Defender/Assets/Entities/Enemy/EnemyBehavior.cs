@@ -13,7 +13,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 		// - Check if a Projectile has hit the enemy
 		Projectile missile = collider.gameObject.GetComponent<Projectile> ();
-		if (missile != null && collider.gameObject.tag == "Player") {
+		if (missile != null) {
 			// - Make the enemy get the damage
 			float damage = missile.damage;
 			TakeDamage (damage);
