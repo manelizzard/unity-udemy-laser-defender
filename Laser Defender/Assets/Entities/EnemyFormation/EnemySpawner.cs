@@ -16,6 +16,8 @@ public class EnemySpawner : MonoBehaviour {
 	/// </summary>
 	[SerializeField] float speed = 5f;
 
+	[SerializeField] float spawnDelay = 0.5f;
+
 	/// <summary>
 	/// The max value of the x axis the formation can take
 	/// </summary>
@@ -38,17 +40,22 @@ public class EnemySpawner : MonoBehaviour {
 		xmin = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distance)).x;
 		xmax = Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, distance)).x;
 
-		SpawnEnemies ();
+		SpawnUntillFullFormation ();
 	}
 
 	/// <summary>
 	/// Spawns the enemies inside each 'Position' GameObject
 	/// </summary>
-	private void SpawnEnemies() {
-		// - Instantiate enemies and attach them under the EnemyFormation positions
-		foreach (Transform child in transform) {
-			GameObject enemy = Instantiate (enemyPrefab, child.position, Quaternion.identity) as GameObject;
-			enemy.transform.parent = child;
+	private void SpawnUntillFullFormation() {
+		Transform nextFreePosition = NextFreePosition ();
+
+		if (nextFreePosition) {
+			// - Instantiate an enemy and attach them under the free position
+			GameObject enemy = Instantiate (enemyPrefab, nextFreePosition.position, Quaternion.identity) as GameObject;
+			enemy.transform.parent = nextFreePosition;
+
+			// - Spawn again untill full formation
+			Invoke ("SpawnUntillFullFormation", spawnDelay);
 		}
 	}
 
@@ -73,7 +80,7 @@ public class EnemySpawner : MonoBehaviour {
 		}
 	
 		if (AllMembersDeath ()) {
-			SpawnEnemies ();
+			SpawnUntillFullFormation ();
 		}
 	}
 
@@ -92,10 +99,26 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Obtains the next free position where to spawn an enemy.
+	/// </summary>
+	/// <returns>The free position.</returns>
+	private Transform NextFreePosition() {
+		foreach (Transform childPositionGameObject in transform) {
+			if (childPositionGameObject.childCount == 0) {
+				return childPositionGameObject;
+			}
+		}
+
+		return null;
+	}
+
+	/// <summary>
 	/// Gizmos drawing for easier game development
 	/// </summary>
 	public void OnDrawGizmos() {
 		// - Draw the limits of the formation
 		Gizmos.DrawWireCube(transform.position, new Vector3(width, height, 0));
 	}
+
+
 }
