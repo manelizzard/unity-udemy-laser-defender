@@ -10,6 +10,7 @@ public class ScoreKeeper : MonoBehaviour {
 	void Start () {
 		scoreText = GetComponent<Text> ();
 		score = 0;
+		Reset ();
 	}
 	
 	public void Score(int points) {
