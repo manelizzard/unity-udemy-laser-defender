@@ -9,6 +9,12 @@ public class EnemyBehavior : MonoBehaviour {
 	public float projectileSpeed;
 	public float shotsPerSecond = 0.5f;
 
+	private ScoreKeeper scoreKeeper;
+
+	void Start() {
+		scoreKeeper = FindObjectOfType<ScoreKeeper> ();
+	}
+
 	void OnTriggerEnter2D(Collider2D collider) {
 
 		// - Check if a Projectile has hit the enemy
@@ -29,9 +35,11 @@ public class EnemyBehavior : MonoBehaviour {
 	/// <param name="damage">Damage.</param>
 	void TakeDamage(float damage) {
 		health -= damage;
+		scoreKeeper.Score (10);
 
 		// - If health reaches 0, destroy itself
 		if (health <= 0) {
+			scoreKeeper.Score (100);
 			Destroy(gameObject);
 		}
 	}
