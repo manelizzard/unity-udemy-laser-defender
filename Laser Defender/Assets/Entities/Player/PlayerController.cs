@@ -13,8 +13,9 @@ public class PlayerController : MonoBehaviour {
 	float xmin;
 	float xmax;
 
-	void Start() {
+	public AudioClip fireSound;
 
+	void Start() {
 		// - Calculate the end of the game space
 		float distance = transform.position.z - Camera.main.transform.position.z;
 		xmin = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distance)).x + padding;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour {
 	void Fire() {
 		GameObject bullet = Instantiate(laserPrefab, this.transform.position, Quaternion.identity) as GameObject;
 		bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, projectileSpeed, 0);
+		AudioSource.PlayClipAtPoint (fireSound, transform.position);
 	}
 
 	void Update () {

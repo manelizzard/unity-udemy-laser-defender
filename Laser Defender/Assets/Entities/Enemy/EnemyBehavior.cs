@@ -9,6 +9,9 @@ public class EnemyBehavior : MonoBehaviour {
 	public float projectileSpeed;
 	public float shotsPerSecond = 0.5f;
 
+	public AudioClip fireAudioClip;
+	public AudioClip dieAudioClip;
+
 	private ScoreKeeper scoreKeeper;
 
 	void Start() {
@@ -39,9 +42,17 @@ public class EnemyBehavior : MonoBehaviour {
 
 		// - If health reaches 0, destroy itself
 		if (health <= 0) {
-			scoreKeeper.Score (100);
-			Destroy(gameObject);
+			Die ();
 		}
+	}
+
+	/// <summary>
+	/// Invoked when an enemy has died, counting score and playing a sound clip.
+	/// </summary>
+	private void Die() {
+		AudioSource.PlayClipAtPoint (dieAudioClip, transform.position);
+		scoreKeeper.Score (100);
+		Destroy(gameObject);
 	}
 
 	void Update() {
@@ -57,5 +68,6 @@ public class EnemyBehavior : MonoBehaviour {
 	void Fire() {
 		GameObject bullet = Instantiate(laserPrefab, this.transform.position, Quaternion.identity) as GameObject;
 		bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, -projectileSpeed, 0);
+		AudioSource.PlayClipAtPoint (fireAudioClip, transform.position);
 	}
 }
