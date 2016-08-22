@@ -120,7 +120,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: -149357569
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bba2a082cf60249cbb9e330f9706407e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -185,6 +185,10 @@ Prefab:
       propertyPath: fireSound
       value: 
       objectReference: {fileID: 8300000, guid: 4eb05866b31ac4df9b8bee726e9bd9de, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_SortingLayerID
+      value: -149357569
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 138514}
