@@ -73,7 +73,13 @@ public class PlayerController : MonoBehaviour {
 
 		// - If health reaches 0, destroy itself
 		if (health <= 0) {
-			Destroy(gameObject);
+			Die ();
 		}
+	}
+
+	private void Die() {
+		LevelManager levelManager = FindObjectOfType<LevelManager> ();
+		levelManager.LoadLevel("Win Screen");
+		Destroy(gameObject);
 	}
 }
